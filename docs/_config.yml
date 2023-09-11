@@ -1,10 +1,10 @@
 # minima theme instructions https://github.com/jekyll/minima
-title: Leonardo Spairani's Blog
+title: Leonardo Spairani
 
 description: >- 
-  Personal blog about Data Science, Technology and Python development.
-baseurl: "www.leospairani.com"
-url: "www.leospairani.com"
+  Personal site and blog about Data Science, Technology and Python development.
+baseurl: ""
+url: ""
 twitter_username: LU_Spairani
 github_username:  lus24
 
