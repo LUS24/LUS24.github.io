@@ -1,14 +1,15 @@
+# minima theme instructions https://github.com/jekyll/minima
 title: Leonardo Spairani's Blog
 
 description: >- 
-  Write an awesome description for your new site here. You can edit this
-  line in _config.yml. It will appear in your document head meta (for
-  Google search results) and in your feed.xml site description.
-baseurl: ""
-url: ""
+  Personal blog about Data Science, Technology and Python development.
+baseurl: "www.leospairani.com"
+url: "www.leospairani.com"
 twitter_username: LU_Spairani
 github_username:  lus24
 
 theme: minima
 plugins:
   - jekyll-feed
+
+show_excerpts: true
