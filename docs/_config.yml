@@ -2,9 +2,9 @@
 title: Leonardo Spairani
 
 description: >- 
-  Personal site and blog about Data Science, Technology and Python development.
-baseurl: ""
-url: ""
+  Personal blog about Data Science, Technology and Python development.
+baseurl: "www.leospairani.com"
+url: "www.leospairani.com"
 twitter_username: LU_Spairani
 github_username:  lus24
 
