@@ -6,9 +6,6 @@ theme:
   name: material
   custom_dir: overrides
 
-markdown_extensions:
-  - meta
-
 extra_css:
   - static/css/extra.css
 
