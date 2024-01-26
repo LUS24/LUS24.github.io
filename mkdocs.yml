@@ -4,6 +4,7 @@ site_url: https://www.leospairani.com
 
 theme:
   name: material
+  custom_dir: overrides
 
 markdown_extensions:
   - meta
@@ -13,6 +14,3 @@ extra_css:
 
 plugins:
   - blog
-
-extra:
-  disqus: leospairani
