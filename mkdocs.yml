@@ -3,5 +3,8 @@ site_name: Leo Spairani
 theme:
   name: material
 
+extra_css:
+  - static/css/extra.css
+
 plugins:
   - blog
