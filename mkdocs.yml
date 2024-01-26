@@ -1,10 +1,18 @@
 site_name: Leo Spairani
 
+site_url: https://www.leospairani.com
+
 theme:
   name: material
+
+markdown_extensions:
+  - meta
 
 extra_css:
   - static/css/extra.css
 
 plugins:
   - blog
+
+extra:
+  disqus: leospairani
