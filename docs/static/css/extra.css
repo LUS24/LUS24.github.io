@@ -1,3 +1,17 @@
 p, li {
     text-align: justify;
 }
+
+#profile-picture {
+    border-radius: 50%;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 50%;
+    height: 200px;
+    width: 200px;
+}
+
+.text-center {
+    text-align: center;
+}
