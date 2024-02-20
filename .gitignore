@@ -1,3 +1,4 @@
 .vscode
 # Contains a build for testing
 site
+/archive/
