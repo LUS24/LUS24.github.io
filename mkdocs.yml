@@ -7,6 +7,7 @@ theme:
   custom_dir: overrides
   features:
     - content.tooltips
+    - content.code.copy
 
 extra_css:
   - static/css/extra.css
@@ -16,6 +17,9 @@ plugins:
 
 markdown_extensions: 
   - abbr
+  - admonition
+  - pymdownx.details
+  - pymdownx.superfences
   - attr_list
   - md_in_html
   - pymdownx.snippets
