@@ -2,3 +2,5 @@
 # Contains a build for testing
 site
 /archive/
+data/
+downloads/
