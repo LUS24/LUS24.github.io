@@ -537,20 +537,14 @@
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Download the database">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
+</li>
+      
+        <li class="md-nav__item">
   <a href="#conclusion" class="md-nav__link">
     <span class="md-ellipsis">
       Conclusion
     </span>
   </a>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
       
@@ -824,7 +818,7 @@ Source: <a href="https://clinicaltrials.gov/about-site/about-ctg">https://clinic
 </code></pre></div>
 <p>The file we are interested in is the <code>postgres.dmp</code> file, which is a PostgreSQL database dump (backup) of the AACT database. We can use it to recreate a local copy of the database. </p>
 <p>The other files are metadata, which I didn't find very useful, I prefer to use the information in AACT website to get some insight of how the database is structured.</p>
-<h3 id="conclusion">Conclusion</h3>
+<h2 id="conclusion">Conclusion</h2>
 <p>In this post I shared a method to download a static copy of the AACT database using the python requests library. In upcoming blog posts I will show how to download the database metadata and how to create a local database with the downloaded dump file and docker.</p>
 
 
@@ -841,6 +835,13 @@ Source: <a href="https://clinicaltrials.gov/about-site/about-ctg">https://clinic
 
   
 
+
+
+    <hr>
+    <p>If you find this content useful, please consider supporting my work by buying me a coffee.</p>
+    <a href="https://www.buymeacoffee.com/contactvw" target="_blank"><img
+            src="https://cdn.buymeacoffee.com/buttons/v2/default-blue.png" alt="Buy Me A Coffee"
+            style="height: 60px !important;width: 217px !important;"></a>
 
 
   <h2 id="__comments">Comments</h2>
