@@ -9,6 +9,7 @@ categories:
   - Data Extraction
   - Webscrapping
 comments: true
+donations: true
 ---
 
 # Downloading a static copy of the AACT database with Python

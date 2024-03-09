@@ -11,6 +11,7 @@ categories:
   - Data Extraction
   - Webscrapping
 comments: true
+donations: true
 ---
 
 # Downloading AACT database metadata with Pandas and Selenium
