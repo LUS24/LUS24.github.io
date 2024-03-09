@@ -89,6 +89,6 @@ The file we are interested in is the `postgres.dmp` file, which is a PostgreSQL 
 The other files are metadata, which I didn't find very useful, I prefer to use the information in AACT website to get some insight of how the database is structured.
 
 
-### Conclusion
+## Conclusion
 
 In this post I shared a method to download a static copy of the AACT database using the python requests library. In upcoming blog posts I will show how to download the database metadata and how to create a local database with the downloaded dump file and docker.
