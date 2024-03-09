@@ -1,6 +1,10 @@
 .vscode
+.ruff_cache
 # Contains a build for testing
 site
 /archive/
+
+# Specific files created by posts related code
+docs/assets/posts/downloading-aact-database-metadata-with-pandas-and-selenium/code/*.csv
 data/
 downloads/
