@@ -1,0 +1,1122 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://www.leospairani.com/blog/2024/03/09/downloading-aact-database-metadata-with-pandas-and-selenium/">
+      
+      
+        <link rel="prev" href="../../01/downloading-a-static-copy-of-the-aact-database-with-python/">
+      
+      
+      
+      <link rel="icon" href="../../../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.5.5">
+    
+    
+      
+        <title>Downloading AACT database metadata with Pandas and Selenium - Leo Spairani</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../../../assets/stylesheets/main.50c56a3b.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../../../../static/css/extra.css">
+    
+    <script>__md_scope=new URL("../../../../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#downloading-aact-database-metadata-with-pandas-and-selenium" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../../../.." title="Leo Spairani" class="md-header__button md-logo" aria-label="Leo Spairani" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Leo Spairani
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Downloading AACT database metadata with Pandas and Selenium
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var media,input,key,value,palette=__md_get("__palette");if(palette&&palette.color){"(prefers-color-scheme)"===palette.color.media&&(media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']"),palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent"));for([key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+                
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" hidden>
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../../../.." title="Leo Spairani" class="md-nav__button md-logo" aria-label="Leo Spairani" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    Leo Spairani
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../.." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    About me
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Blog
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            Blog
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+    
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      <a href="../../../../" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Posts index
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_2" id="__nav_2_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Archive
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_2">
+            <span class="md-nav__icon md-icon"></span>
+            Archive
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../archive/2024/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    2024
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_3" id="__nav_2_3_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Categories
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_3">
+            <span class="md-nav__icon md-icon"></span>
+            Categories
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/clinical-trials/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Clinical Trials
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/data-extraction/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Data Extraction
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/pandas/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Pandas
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/python/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Python
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/selenium/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Selenium
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/webscrapping/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Webscrapping
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+                
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#requirements" class="md-nav__link">
+    <span class="md-ellipsis">
+      Requirements
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#download-the-metadata" class="md-nav__link">
+    <span class="md-ellipsis">
+      Download the metadata
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Download the metadata">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#downloading-the-static-tables" class="md-nav__link">
+    <span class="md-ellipsis">
+      Downloading the static tables
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#downloading-the-dynamic-table" class="md-nav__link">
+    <span class="md-ellipsis">
+      Downloading the dynamic table
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#conclusion" class="md-nav__link">
+    <span class="md-ellipsis">
+      Conclusion
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+  <div class="md-content md-content--post" data-md-component="content">
+    <div class="md-sidebar md-sidebar--post" data-md-component="sidebar" data-md-type="navigation">
+      <div class="md-sidebar__scrollwrap">
+        <div class="md-sidebar__inner md-post">
+          <nav class="md-nav md-nav--primary">
+            <div class="md-post__back">
+              <div class="md-nav__title md-nav__container">
+                <a href="../../../../" class="md-nav__link">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+                  <span class="md-ellipsis">
+                    Back to index
+                  </span>
+                </a>
+              </div>
+            </div>
+            
+              <div class="md-post__authors md-typeset">
+                
+                  <div class="md-profile md-post__profile">
+                    <span class="md-author md-author--long">
+                      <img src="https://avatars.githubusercontent.com/u/7612578?s=400&u=72f1b5ee3dfe65095b8cd39aee611e8a4260a99b&v=4" alt="Leonardo Ulises Spairani">
+                    </span>
+                    <span class="md-profile__description">
+                      <strong>
+                        
+                          Leonardo Ulises Spairani
+                        
+                      </strong>
+                      <br>
+                      Data Scientist and Python Developer
+                    </span>
+                  </div>
+                
+              </div>
+            
+            <ul class="md-post__meta md-nav__list">
+              <li class="md-nav__item md-nav__item--section">
+                <div class="md-post__title">
+                  <span class="md-ellipsis">
+                    Metadata
+                  </span>
+                </div>
+                <nav class="md-nav">
+                  <ul class="md-nav__list">
+                    <li class="md-nav__item">
+                      <div class="md-nav__link">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 19H5V8h14m-3-7v2H8V1H6v2H5c-1.11 0-2 .89-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2h-1V1m-1 11h-5v5h5v-5Z"/></svg>
+                        <time datetime="2024-03-09 00:00:00" class="md-ellipsis">March 9, 2024</time>
+                      </div>
+                    </li>
+                    
+                    
+                      <li class="md-nav__item">
+                        <div class="md-nav__link">
+                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9 3v15h3V3H9m3 2 4 13 3-1-4-13-3 1M5 5v13h3V5H5M3 19v2h18v-2H3Z"/></svg>
+                          <span class="md-ellipsis">
+                            in
+                            
+                              <a href="../../../../category/python/">Python</a>, 
+                              <a href="../../../../category/selenium/">Selenium</a>, 
+                              <a href="../../../../category/pandas/">Pandas</a>, 
+                              <a href="../../../../category/clinical-trials/">Clinical Trials</a>, 
+                              <a href="../../../../category/data-extraction/">Data Extraction</a>, 
+                              <a href="../../../../category/webscrapping/">Webscrapping</a></span>
+                        </div>
+                      </li>
+                    
+                    
+                      
+                      <li class="md-nav__item">
+                        <div class="md-nav__link">
+                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 20a8 8 0 0 0 8-8 8 8 0 0 0-8-8 8 8 0 0 0-8 8 8 8 0 0 0 8 8m0-18a10 10 0 0 1 10 10 10 10 0 0 1-10 10C6.47 22 2 17.5 2 12A10 10 0 0 1 12 2m.5 5v5.25l4.5 2.67-.75 1.23L11 13V7h1.5Z"/></svg>
+                          <span class="md-ellipsis">
+                            
+                              7 min read
+                            
+                          </span>
+                        </div>
+                      </li>
+                    
+                  </ul>
+                </nav>
+              </li>
+            </ul>
+          </nav>
+          
+        </div>
+      </div>
+    </div>
+    <article class="md-content__inner md-typeset">
+      
+        
+
+
+<h1 id="downloading-aact-database-metadata-with-pandas-and-selenium">Downloading AACT database metadata with Pandas and Selenium</h1>
+<p>In this post I will present how I downloaded the HTML tables that contain the metadata of the "Access to Aggregate Content of ClinicalTrials.gov" (AACT) database and store them as comma separated values (csv) files. The objective is to use this information to create an interactive dashboard that will help users understand the contents of the database.</p>
+<!-- more -->
+
+<p>The metadata is comprised of <a href="https://aact.ctti-clinicaltrials.org/data_dictionary">three HTML tables on the same webpage</a>. They are the following:</p>
+<ul>
+<li>The <strong>"AACT Data Elements"</strong> table that contains the names of the tables and the columns along with the column descriptions.</li>
+<li>The "<strong>AACT Tables</strong>" table, with information about study-related tables. The information that I'm interested in is the table name and their description.</li>
+<li>The <strong>"AACT Views &amp; Functions"</strong> table, which contains information about the views and functions in used to make data retrieval easier.</li>
+</ul>
+<p>Without further ado, let's get started.</p>
+<h2 id="requirements">Requirements</h2>
+<ul>
+<li>
+<p>A working linux installation. I'm running Ubuntu 22.04 in <a href="https://learn.microsoft.com/en-us/windows/wsl/install">WSL (Windows Subsystem for Linux)</a> on Windows 11.</p>
+</li>
+<li>
+<p>A Python environment. I'm using <a href="https://docs.anaconda.com/free/miniconda/index.html">miniconda</a> with a Python 3.11.7 virtual environment.</p>
+</li>
+<li>
+<p>Installing the <a href="https://chromedriver.chromium.org/">chrome-driver</a>. In Ubuntu it can be done using the commands below:</p>
+</li>
+</ul>
+<div class="highlight"><pre><span></span><code>sudo<span class="w"> </span>apt-get<span class="w"> </span>update
+sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> </span>chromium-chromedriver<span class="w"> </span>-y
+</code></pre></div>
+<ul>
+<li>Installing the following python packages:<ul>
+<li><a href="https://www.selenium.dev/documentation/"><code>selenium</code></a>: we will use it to load the JavaScript-dependent <strong>"AACT Data Elements"</strong> table and extract it's text. This approach is relatively slow but since it is on operation I don't consider that spending time optimization is worth it.</li>
+<li><a href="https://pandas.pydata.org/"><code>pandas</code></a>: we will use it to extract the <strong>"AACT Tables"</strong> and <strong>"AACT Views &amp; Functions"</strong> tables. We don't need selenium for those because they are static, meaning that they are already in the HTML when the page is loaded and don't depend on JavaScript to be rendered. Additionally, we will use <code>pandas</code> to do some data manipulation and then store the tables as csv files.</li>
+<li><a href="https://lxml.de/">lxml</a>: it is a dependency of <code>pandas</code> and is used to parse the HTML and extract the tables.</li>
+</ul>
+</li>
+</ul>
+<p>To install the packages, run the following command:</p>
+<div class="highlight"><pre><span></span><code>pip<span class="w"> </span>install<span class="w"> </span>selenium<span class="w"> </span>pandas<span class="w"> </span>lxml
+</code></pre></div>
+<p>Once we have the requirements installed, we can start coding.</p>
+<h2 id="download-the-metadata">Download the metadata</h2>
+<p>For downloading the metadata, we will use two approaches, one for static tables (the simple ones) and another for the dynamic table (the one that depends on JavaScript to be rendered).</p>
+<h3 id="downloading-the-static-tables">Downloading the static tables</h3>
+<p>After inspection of the HTML source code of the page, I found that both static tables have the same class name <code>dictionaryDisplay</code>. With that information, we can use the <code>pandas.read_html</code> function to extract the tables from the HTML and then store them as csv files. I created a file named <code>download-static-tables-metadata.py</code> with the following code:</p>
+<div class="highlight"><table class="highlighttable"><tr><th colspan="2" class="filename"><span class="filename">download-static-tables-metadata.py</span></th></tr><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span>
+<span class="normal">12</span>
+<span class="normal">13</span>
+<span class="normal">14</span>
+<span class="normal">15</span>
+<span class="normal">16</span>
+<span class="normal">17</span>
+<span class="normal">18</span>
+<span class="normal">19</span>
+<span class="normal">20</span>
+<span class="normal">21</span>
+<span class="normal">22</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
+
+<span class="c1"># Metadata URL</span>
+<span class="n">METADATA_URL</span> <span class="o">=</span> <span class="s2">&quot;https://aact.ctti-clinicaltrials.org/data_dictionary&quot;</span>
+
+<span class="c1"># Date</span>
+<span class="n">today</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">today</span><span class="p">()</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;%Y-%m-</span><span class="si">%d</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="c1"># Download the static tables</span>
+
+<span class="c1">## Since we know that exactly two tables are selected</span>
+<span class="c1">## we can use python destructuring syntax to assign the two pandas DataFrames</span>
+<span class="c1">## to aact_tables and aact_v_and_f</span>
+<span class="n">aact_tables</span><span class="p">,</span> <span class="n">aact_v_and_f</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_html</span><span class="p">(</span>
+    <span class="n">METADATA_URL</span><span class="p">,</span> <span class="n">attrs</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;class&quot;</span><span class="p">:</span> <span class="s2">&quot;dictionaryDisplay&quot;</span><span class="p">}</span>
+<span class="p">)</span>
+
+<span class="c1">## Save the DataFrames to CSV</span>
+<span class="n">aact_tables</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">today</span><span class="si">}</span><span class="s2">_aact_tables_metadata.csv&quot;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+<span class="n">aact_v_and_f</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">today</span><span class="si">}</span><span class="s2">_aact_views_functions_metadata.csv&quot;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</code></pre></div></td></tr></table></div>
+<p>After running the code with the command <code>python download_aact_metadata.py</code>, we will have two csv files with the metadata of the <strong>"AACT Tables"</strong> and <strong>"AACT Views &amp; Functions"</strong> tables.</p>
+<h3 id="downloading-the-dynamic-table">Downloading the dynamic table</h3>
+<p>To tackle the dynamic table, we will use Selenium to load the page and extract the table. The code is a bit more complex than the previous one, that is why I decided to create a separate file for it.</p>
+<p>Additionally, I used Python classes to organize the code and make it more readable and maintainable.</p>
+<div class="admonition tip">
+<p class="admonition-title">Code explanations</p>
+<p>Click the little "+" buttons in the code to see the explanation of each part.</p>
+</div>
+<div class="admonition info">
+<p class="admonition-title">JavaScript code</p>
+<p>In a few of the functions I decided to use JavaScript to interact with the page. This is because the page updated the DOM after the table was loaded resulting in the following exceptions when trying to interact using Selenium directly:</p>
+<ul>
+<li><a href="https://www.selenium.dev/selenium/docs/api/java/org/openqa/selenium/ElementNotInteractableException.html">ElementNotInteractableException</a>.</li>
+<li><a href="https://www.selenium.dev/selenium/docs/api/java/org/openqa/selenium/StaleElementReferenceException.html">StaleElementReferenceException</a>.</li>
+</ul>
+</div>
+<div class="highlight"><table class="highlighttable"><tr><th colspan="2" class="filename"><span class="filename">download-dynamic-table-metadata.py</span></th></tr><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">  1</span>
+<span class="normal">  2</span>
+<span class="normal">  3</span>
+<span class="normal">  4</span>
+<span class="normal">  5</span>
+<span class="normal">  6</span>
+<span class="normal">  7</span>
+<span class="normal">  8</span>
+<span class="normal">  9</span>
+<span class="normal"> 10</span>
+<span class="normal"> 11</span>
+<span class="normal"> 12</span>
+<span class="normal"> 13</span>
+<span class="normal"> 14</span>
+<span class="normal"> 15</span>
+<span class="normal"> 16</span>
+<span class="normal"> 17</span>
+<span class="normal"> 18</span>
+<span class="normal"> 19</span>
+<span class="normal"> 20</span>
+<span class="normal"> 21</span>
+<span class="normal"> 22</span>
+<span class="normal"> 23</span>
+<span class="normal"> 24</span>
+<span class="normal"> 25</span>
+<span class="normal"> 26</span>
+<span class="normal"> 27</span>
+<span class="normal"> 28</span>
+<span class="normal"> 29</span>
+<span class="normal"> 30</span>
+<span class="normal"> 31</span>
+<span class="normal"> 32</span>
+<span class="normal"> 33</span>
+<span class="normal"> 34</span>
+<span class="normal"> 35</span>
+<span class="normal"> 36</span>
+<span class="normal"> 37</span>
+<span class="normal"> 38</span>
+<span class="normal"> 39</span>
+<span class="normal"> 40</span>
+<span class="normal"> 41</span>
+<span class="normal"> 42</span>
+<span class="normal"> 43</span>
+<span class="normal"> 44</span>
+<span class="normal"> 45</span>
+<span class="normal"> 46</span>
+<span class="normal"> 47</span>
+<span class="normal"> 48</span>
+<span class="normal"> 49</span>
+<span class="normal"> 50</span>
+<span class="normal"> 51</span>
+<span class="normal"> 52</span>
+<span class="normal"> 53</span>
+<span class="normal"> 54</span>
+<span class="normal"> 55</span>
+<span class="normal"> 56</span>
+<span class="normal"> 57</span>
+<span class="normal"> 58</span>
+<span class="normal"> 59</span>
+<span class="normal"> 60</span>
+<span class="normal"> 61</span>
+<span class="normal"> 62</span>
+<span class="normal"> 63</span>
+<span class="normal"> 64</span>
+<span class="normal"> 65</span>
+<span class="normal"> 66</span>
+<span class="normal"> 67</span>
+<span class="normal"> 68</span>
+<span class="normal"> 69</span>
+<span class="normal"> 70</span>
+<span class="normal"> 71</span>
+<span class="normal"> 72</span>
+<span class="normal"> 73</span>
+<span class="normal"> 74</span>
+<span class="normal"> 75</span>
+<span class="normal"> 76</span>
+<span class="normal"> 77</span>
+<span class="normal"> 78</span>
+<span class="normal"> 79</span>
+<span class="normal"> 80</span>
+<span class="normal"> 81</span>
+<span class="normal"> 82</span>
+<span class="normal"> 83</span>
+<span class="normal"> 84</span>
+<span class="normal"> 85</span>
+<span class="normal"> 86</span>
+<span class="normal"> 87</span>
+<span class="normal"> 88</span>
+<span class="normal"> 89</span>
+<span class="normal"> 90</span>
+<span class="normal"> 91</span>
+<span class="normal"> 92</span>
+<span class="normal"> 93</span>
+<span class="normal"> 94</span>
+<span class="normal"> 95</span>
+<span class="normal"> 96</span>
+<span class="normal"> 97</span>
+<span class="normal"> 98</span>
+<span class="normal"> 99</span>
+<span class="normal">100</span>
+<span class="normal">101</span>
+<span class="normal">102</span>
+<span class="normal">103</span>
+<span class="normal">104</span>
+<span class="normal">105</span>
+<span class="normal">106</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">from</span> <span class="nn">selenium</span> <span class="kn">import</span> <span class="n">webdriver</span>
+<span class="kn">from</span> <span class="nn">selenium.webdriver.common.by</span> <span class="kn">import</span> <span class="n">By</span>
+<span class="kn">from</span> <span class="nn">selenium.webdriver.support.ui</span> <span class="kn">import</span> <span class="n">WebDriverWait</span>  <span class="c1"># (1)!</span>
+<span class="kn">from</span> <span class="nn">selenium.webdriver.support</span> <span class="kn">import</span> <span class="n">expected_conditions</span> <span class="k">as</span> <span class="n">EC</span>  <span class="c1"># (2)!</span>
+<span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
+
+
+<span class="k">class</span> <span class="nc">AACTDataElementsDownloader</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Class to download the contents of the AACT data elements</span>
+<span class="sd">    dynamic table.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">url</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">url</span> <span class="o">=</span> <span class="n">url</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">driver</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">download_path</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">wait</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">metadata</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="k">def</span> <span class="nf">setup_webdriver</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">chrome_options</span> <span class="o">=</span> <span class="n">webdriver</span><span class="o">.</span><span class="n">ChromeOptions</span><span class="p">()</span>
+        <span class="n">chrome_options</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--headless&quot;</span><span class="p">)</span>  <span class="c1"># (3)!</span>
+        <span class="n">chrome_options</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;window-size=1920,1080&quot;</span><span class="p">)</span>  <span class="c1"># (4)!</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">driver</span> <span class="o">=</span> <span class="n">webdriver</span><span class="o">.</span><span class="n">Chrome</span><span class="p">(</span><span class="n">options</span><span class="o">=</span><span class="n">chrome_options</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">wait</span> <span class="o">=</span> <span class="n">WebDriverWait</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">driver</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">poll_frequency</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>  <span class="c1"># (5)!</span>
+
+    <span class="k">def</span> <span class="nf">load_page</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">driver</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">url</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">wait_for_table</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">table_selector</span> <span class="o">=</span> <span class="s1">&#39;//*[@id=&quot;jsGrid&quot;]/div[2]/table/tbody/tr[1]/td[3]&#39;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">wait</span><span class="o">.</span><span class="n">until</span><span class="p">(</span><span class="n">EC</span><span class="o">.</span><span class="n">presence_of_element_located</span><span class="p">((</span><span class="n">By</span><span class="o">.</span><span class="n">XPATH</span><span class="p">,</span> <span class="n">table_selector</span><span class="p">)))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">wait</span><span class="o">.</span><span class="n">until</span><span class="p">(</span>
+            <span class="n">EC</span><span class="o">.</span><span class="n">visibility_of</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">driver</span><span class="o">.</span><span class="n">find_element</span><span class="p">(</span><span class="n">By</span><span class="o">.</span><span class="n">XPATH</span><span class="p">,</span> <span class="n">table_selector</span><span class="p">))</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="kc">True</span>
+
+    <span class="k">def</span> <span class="nf">click_next_button</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">driver</span><span class="o">.</span><span class="n">execute_script</span><span class="p">(</span>
+<span class="w">            </span><span class="sd">&quot;&quot;&quot;Array.from(document.querySelectorAll(&#39;span.jsgrid-pager-nav-button a&#39;))</span>
+<span class="sd">                .find(el =&gt; el.textContent.trim() === &quot;Next&quot;).click()&quot;&quot;&quot;</span>
+        <span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">update_total_pages</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">total_pages</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">driver</span><span class="o">.</span><span class="n">execute_script</span><span class="p">(</span>
+<span class="w">            </span><span class="sd">&quot;&quot;&quot;return document.querySelector(&quot;div.jsgrid-pager-container&quot;)</span>
+<span class="sd">                .textContent;&quot;&quot;&quot;</span>
+        <span class="p">)</span>
+        <span class="n">total_pages</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">total_pages</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">)[</span><span class="o">-</span><span class="mi">2</span><span class="p">])</span>
+        <span class="k">return</span> <span class="n">total_pages</span>
+
+    <span class="k">def</span> <span class="nf">get_total_pages</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">total_pages</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">update_total_pages</span><span class="p">()</span>
+        <span class="k">while</span> <span class="n">total_pages</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">total_pages</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">update_total_pages</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">total_pages</span>
+
+    <span class="k">def</span> <span class="nf">get_data_elements_metadata</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">current_page</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">driver</span><span class="o">.</span><span class="n">execute_script</span><span class="p">(</span>
+<span class="w">            </span><span class="sd">&quot;&quot;&quot;return document.querySelector(&quot;div.jsgrid-pager-container&quot;)</span>
+<span class="sd">                .textContent;&quot;&quot;&quot;</span>
+        <span class="p">)</span>
+        <span class="n">current_page</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">current_page</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">)[</span><span class="o">-</span><span class="mi">4</span><span class="p">])</span>
+        <span class="n">total_pages</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_total_pages</span><span class="p">()</span>
+        <span class="n">table_headers</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">driver</span><span class="o">.</span><span class="n">execute_script</span><span class="p">(</span>
+<span class="w">            </span><span class="sd">&quot;&quot;&quot;return Array.from(document.querySelectorAll(&quot;#jsGrid div th&quot;))</span>
+<span class="sd">            .map(element =&gt; element.textContent);&quot;&quot;&quot;</span>
+        <span class="p">)</span>
+        <span class="n">table_data</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">while</span> <span class="n">current_page</span> <span class="o">&lt;=</span> <span class="n">total_pages</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Current page: </span><span class="si">{</span><span class="n">current_page</span><span class="si">}</span><span class="s2"> of </span><span class="si">{</span><span class="n">total_pages</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">wait_for_table</span><span class="p">():</span>
+                <span class="n">row_data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">driver</span><span class="o">.</span><span class="n">execute_script</span><span class="p">(</span>
+<span class="w">                    </span><span class="sd">&quot;&quot;&quot;return Array.from(document.querySelectorAll(&quot;table.jsgrid-table tbody tr&quot;))</span>
+<span class="sd">                        .map(row =&gt; Array.from(row.querySelectorAll(&quot;td&quot;))</span>
+<span class="sd">                        .map(cell =&gt; cell.textContent));&quot;&quot;&quot;</span>
+                <span class="p">)</span>
+                <span class="n">table_data</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">row_data</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">current_page</span> <span class="o">==</span> <span class="n">total_pages</span><span class="p">:</span>
+                <span class="k">break</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">click_next_button</span><span class="p">()</span>
+            <span class="n">current_page</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">driver</span><span class="o">.</span><span class="n">quit</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">metadata</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="o">.</span><span class="n">from_records</span><span class="p">(</span><span class="n">table_data</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="n">table_headers</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">metadata</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">download_path</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Data Elements metadata downloaded and saved&quot;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">download_metadata</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setup_webdriver</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">load_page</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">get_data_elements_metadata</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">finalize</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">driver</span><span class="o">.</span><span class="n">quit</span><span class="p">()</span>
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="n">METADATA_URL</span> <span class="o">=</span> <span class="s2">&quot;https://aact.ctti-clinicaltrials.org/data_dictionary&quot;</span>
+    <span class="n">today</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">today</span><span class="p">()</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;%Y-%m-</span><span class="si">%d</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">metadata_downloader</span> <span class="o">=</span> <span class="n">AACTDataElementsDownloader</span><span class="p">(</span><span class="n">METADATA_URL</span><span class="p">)</span>
+    <span class="n">metadata_downloader</span><span class="o">.</span><span class="n">download_path</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">today</span><span class="si">}</span><span class="s2">_aact_data_elements_metadata.csv&quot;</span>
+    <span class="n">metadata_downloader</span><span class="o">.</span><span class="n">download_metadata</span><span class="p">()</span>
+    <span class="n">metadata_downloader</span><span class="o">.</span><span class="n">finalize</span><span class="p">()</span>
+</code></pre></div></td></tr></table></div>
+<ol>
+<li><a href="https://www.selenium.dev/documentation/webdriver/waits/">WebDriverWait</a> is used to add selenium's explicit wait to the code. It will wait for the element to be present in the DOM before trying to extract it's text.</li>
+<li><a href="https://www.selenium.dev/documentation/webdriver/support_features/expected_conditions/">EC (expected condition)</a> is used in combination with WebDriverWait to wait for something specific to happen before proceeding with the code.</li>
+<li>Headless mode is used to run the browser without a graphical interface. This is useful when running the code in a terminal, for example in a server environment.</li>
+<li>I used a FullHD window size to make sure that the table is fully rendered. This is important because the <code>find_element</code> method will only find the elements that are visible in the viewport.</li>
+<li>The wait is configured to check every 1 second if the expected condition is met with a time limit of 10 seconds before raising a <code>TimeoutException</code>.</li>
+</ol>
+<p>As you can see there are quite a few lines of code, but the process is relatively straight forward:</p>
+<ol>
+<li>The page is loaded.</li>
+<li>A wait is added to make sure that the table is fully rendered.</li>
+<li>The total number of pages is extracted.</li>
+<li>The current page number is extracted.</li>
+<li>The table data from the current page is extracted and saved into a variable.</li>
+<li>The next button is clicked and the and the current page is updated by adding 1.</li>
+<li>Steps 2, 5 and 6 are repeated until the last page is reached.</li>
+<li>The table data is saved as a csv file.</li>
+<li>The browser is closed.</li>
+</ol>
+<p>After running the code with the command <code>python download-dynamic-tables-metadata.py</code>, you should and an output like this:</p>
+<div class="highlight"><pre><span></span><code>Current<span class="w"> </span>page:<span class="w"> </span><span class="m">1</span><span class="w"> </span>of<span class="w"> </span><span class="m">12</span>
+Current<span class="w"> </span>page:<span class="w"> </span><span class="m">2</span><span class="w"> </span>of<span class="w"> </span><span class="m">12</span>
+Current<span class="w"> </span>page:<span class="w"> </span><span class="m">3</span><span class="w"> </span>of<span class="w"> </span><span class="m">12</span>
+Current<span class="w"> </span>page:<span class="w"> </span><span class="m">4</span><span class="w"> </span>of<span class="w"> </span><span class="m">12</span>
+Current<span class="w"> </span>page:<span class="w"> </span><span class="m">5</span><span class="w"> </span>of<span class="w"> </span><span class="m">12</span>
+Current<span class="w"> </span>page:<span class="w"> </span><span class="m">6</span><span class="w"> </span>of<span class="w"> </span><span class="m">12</span>
+Current<span class="w"> </span>page:<span class="w"> </span><span class="m">7</span><span class="w"> </span>of<span class="w"> </span><span class="m">12</span>
+Current<span class="w"> </span>page:<span class="w"> </span><span class="m">8</span><span class="w"> </span>of<span class="w"> </span><span class="m">12</span>
+Current<span class="w"> </span>page:<span class="w"> </span><span class="m">9</span><span class="w"> </span>of<span class="w"> </span><span class="m">12</span>
+Current<span class="w"> </span>page:<span class="w"> </span><span class="m">10</span><span class="w"> </span>of<span class="w"> </span><span class="m">12</span>
+Current<span class="w"> </span>page:<span class="w"> </span><span class="m">11</span><span class="w"> </span>of<span class="w"> </span><span class="m">12</span>
+Current<span class="w"> </span>page:<span class="w"> </span><span class="m">12</span><span class="w"> </span>of<span class="w"> </span><span class="m">12</span>
+Data<span class="w"> </span>Elements<span class="w"> </span>metadata<span class="w"> </span>downloaded<span class="w"> </span>and<span class="w"> </span>saved
+</code></pre></div>
+<p>Finally, a file with the name <code>aact-data-elements.csv</code> will be created in the same directory as the script.</p>
+<details class="info">
+<summary>Possible improvements</summary>
+<p>A few improvents that can be made are:</p>
+<ul>
+<li>Refactor the <code>download_table</code> method to use a while loop instead of a for loop. This way we can avoid the need to know the total number of pages before starting the download. </li>
+<li>Add a try-except block to handle possible exceptions and gracefully close the browser in case of an error.</li>
+<li>Add a logger to the script to make it easier to debug and understand what is happening.</li>
+<li>Add tests.</li>
+<li>Add type hints.</li>
+<li>Add docstrings.</li>
+</ul>
+</details>
+<h2 id="conclusion">Conclusion</h2>
+<p>In this post I presented how I downloaded the metadata of the "Access to Aggregate Content of ClinicalTrials.gov" (AACT) database using Python, Selenium and Pandas. Selenium was used to deal with the JavaScript-dependant table and Pandas to extract the data from the simple HTML tables and store all the information in CSV files. </p>
+<p>We saw that the Selenium code is a bit more complex than the Pandas code, so it is a good idea to use classes to organize the code and make it more readable and maintainable. Additionally, we saw that it is possible to use JavaScript (through Selenium) to interact with the page and avoid some exceptions that can be raised when trying to interact with the page using Selenium directly.</p>
+<p>In the upcoming posts I will present how I cleaned the data and metadata, calculated some statistics and stored the results in files ready to be used in a dashboard.</p>
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+  
+
+
+
+  <h2 id="__comments">Comments</h2>
+  <div id="disqus_thread"></div>
+  <script>
+      /**
+      *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+      *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables    */
+      var disqus_config = function () {
+      this.page.url = 'https://leospairani.disqus.com/';  // Replace PAGE_URL with your page's canonical URL variable
+      this.page.identifier = 'leospairani'; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+      };
+
+      (function() { // DON'T EDIT BELOW THIS LINE
+      var d = document, s = d.createElement('script');
+      s.src = 'https://leospairani.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', +new Date());
+      (d.head || d.body).appendChild(s);
+      })();
+  </script>
+  <script id="dsq-count-scr" src="//leospairani.disqus.com/count.js" async></script>
+  <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+      
+    </article>
+  </div>
+
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "../../../../..", "features": ["content.tooltips", "content.code.copy", "content.code.annotate"], "search": "../../../../../assets/javascripts/workers/search.b8dbb3d2.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../../../../../assets/javascripts/bundle.c18c5fb9.min.js"></script>
+      
+    
+  </body>
+</html>

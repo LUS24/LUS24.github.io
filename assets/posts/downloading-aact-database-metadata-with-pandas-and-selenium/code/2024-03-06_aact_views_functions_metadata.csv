@@ -1,0 +1,14 @@
+Schema,View/Function name,Description,Source Data,Data Returned,Example
+ctgov,all_conditions,concatenated list of all conditions (MeSH term) identified for a study,browse_conditions.mesh_term,nct_id & names: string containing comma delimited list of condtions,select * from all_conditions where nct_id = '';
+ctgov,all_countries,concatenates all countries associated with a study (excluding those identified as having been removed),countries.name,nct_id & names: string containing comma delimited list of countries,
+ctgov,all_design_outcomes,,design_outcomes.measure,nct_id & names: string containing comma delimited list of outcome measures,
+ctgov,all_facilities,concatenated list of all facility names associated with a study,facilities.name,nct_id & names: string containing comma delimited list of facility names,
+ctgov,all_group_types,concantenated list of the arm/group types included in a study,design_groups.group_type,nct_id & names: string containing comma delimited list of group types,
+ctgov,all_id_information,concatenated list of the IDs associated with a study,id_information.id_value,nct_id & names: string containing comma delimited list of ids,
+ctgov,all_interventions,concatenated list of all interventions (MeSH term) identified for a study,browse_interventions.mesh_term,nct_id & names: string containing comma delimited list of mesh terms,
+ctgov,all_intervention_types,concatenated list of all intervention types for a study,interventions.intervention_type,nct_id & names: string containing comma delimited list of intervention types,
+ctgov,all_keywords,concatenated list of the keywords associated with a study,keywords.name,nct_id & names: string containing comma delimited list of keywords,
+ctgov,all_primary_outcome_measures,concatenated list of the primary outcome measures for a study,design_outcomes.measure where type='primary',nct_id & names: string containing comma delimited list of measures,
+ctgov,all_secondary_outcome_measures,concatenated list of the secondary outcome measures for a study,design_outcomes.measure where type='secondary',nct_id & names: string containing comma delimited list of measures,
+ctgov,all_sponsors,concatenated list of the study sponsors,sponsors.name,nct_id & names: string containing comma delimited list of sponsor names,
+ctgov,all_states,concatenated list of the states where the study is being conducted,facilities.state,nct_id & names: string containing comma delimited list of state names,

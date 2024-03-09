@@ -2,42 +2,57 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
          <loc>https://www.leospairani.com/</loc>
-         <lastmod>2024-03-02</lastmod>
+         <lastmod>2024-03-09</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://www.leospairani.com/blog/</loc>
-         <lastmod>2024-03-02</lastmod>
+         <lastmod>2024-03-09</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://www.leospairani.com/blog/2024/03/01/downloading-a-static-copy-of-the-aact-database-with-python/</loc>
-         <lastmod>2024-03-02</lastmod>
+         <lastmod>2024-03-09</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://www.leospairani.com/blog/2024/03/09/downloading-aact-database-metadata-with-pandas-and-selenium/</loc>
+         <lastmod>2024-03-09</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://www.leospairani.com/blog/archive/2024/</loc>
-         <lastmod>2024-03-02</lastmod>
+         <lastmod>2024-03-09</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://www.leospairani.com/blog/category/python/</loc>
-         <lastmod>2024-03-02</lastmod>
+         <lastmod>2024-03-09</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://www.leospairani.com/blog/category/selenium/</loc>
+         <lastmod>2024-03-09</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://www.leospairani.com/blog/category/pandas/</loc>
+         <lastmod>2024-03-09</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://www.leospairani.com/blog/category/clinical-trials/</loc>
-         <lastmod>2024-03-02</lastmod>
+         <lastmod>2024-03-09</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://www.leospairani.com/blog/category/data-extraction/</loc>
-         <lastmod>2024-03-02</lastmod>
+         <lastmod>2024-03-09</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://www.leospairani.com/blog/category/webscrapping/</loc>
-         <lastmod>2024-03-02</lastmod>
+         <lastmod>2024-03-09</lastmod>
          <changefreq>daily</changefreq>
     </url>
 </urlset>
