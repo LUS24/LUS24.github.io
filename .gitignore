@@ -5,6 +5,7 @@ site
 /archive/
 
 # Specific files created by posts related code
-docs/assets/posts/downloading-aact-database-metadata-with-pandas-and-selenium/code/*.csv
 data/
 downloads/
+docs/assets/posts/downloading-aact-database-metadata-with-pandas-and-selenium/code/*.csv
+docs/assets/posts/exploring-the-aact-database-metadata/code/*.csv
