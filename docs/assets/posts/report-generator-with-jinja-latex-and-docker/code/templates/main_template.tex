@@ -1,0 +1,40 @@
+\documentclass[12pt, a4paper]{article}
+\usepackage[left=2cm,top=2cm,right=2cm,bottom=2cm,bindingoffset=0cm]{geometry}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{tikz}
+\usepackage{tikz-cd}
+\usepackage{pgfplots}
+
+\begin{document}
+
+\title{\VAR{content.title}}
+
+\maketitle
+
+\section{Summary}
+\VAR{content.summary}
+
+\BLOCK{ for section in content.sections }
+\section{\VAR{ section.title }}
+\BLOCK{ for part in section.body }
+\VAR{ part.text }
+
+\BLOCK{ if part.table }
+\VAR{ part.table }
+\BLOCK{ endif }
+
+\BLOCK{ if part.figure }
+\begin{figure}
+  \begin{center}
+      \input{\VAR{part.figure.path}}
+  \end{center}
+  \caption{\VAR{part.figure.caption}}
+\end{figure}
+\BLOCK{ endif }
+
+\BLOCK{ endfor }
+\BLOCK{ endfor }
+
+\end{document}
