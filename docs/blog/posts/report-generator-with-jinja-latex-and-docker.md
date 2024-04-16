@@ -1,6 +1,6 @@
 ---
 title: Generating reports with Jinja, LaTeX and Docker
-date: 2024-03-20
+date: 2024-04-16
 authors:
   - leonardo
 categories:
