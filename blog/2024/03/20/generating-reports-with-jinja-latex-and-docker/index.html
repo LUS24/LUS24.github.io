@@ -1,0 +1,1511 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://www.leospairani.com/blog/2024/03/20/generating-reports-with-jinja-latex-and-docker/">
+      
+      
+        <link rel="prev" href="../../09/downloading-aact-database-metadata-with-pandas-and-selenium/">
+      
+      
+      
+      <link rel="icon" href="../../../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.5.5">
+    
+    
+      
+        <title>Generating reports with Jinja, LaTeX and Docker - Leo Spairani</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../../../assets/stylesheets/main.50c56a3b.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../../../../static/css/extra.css">
+    
+    <script>__md_scope=new URL("../../../../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#generating-reports-with-jinja-latex-and-docker" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../../../.." title="Leo Spairani" class="md-header__button md-logo" aria-label="Leo Spairani" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Leo Spairani
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Generating reports with Jinja, LaTeX and Docker
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var media,input,key,value,palette=__md_get("__palette");if(palette&&palette.color){"(prefers-color-scheme)"===palette.color.media&&(media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']"),palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent"));for([key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+                
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" hidden>
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../../../.." title="Leo Spairani" class="md-nav__button md-logo" aria-label="Leo Spairani" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    Leo Spairani
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../.." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    About me
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Blog
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            Blog
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+    
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      <a href="../../../../" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Posts index
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_2" id="__nav_2_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Archive
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_2">
+            <span class="md-nav__icon md-icon"></span>
+            Archive
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../archive/2024/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    2024
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_3" id="__nav_2_3_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Categories
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_3">
+            <span class="md-nav__icon md-icon"></span>
+            Categories
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/clinical-trials/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Clinical Trials
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/data-extraction/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Data Extraction
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/docker/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Docker
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/jinja2/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Jinja2
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/latex/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Latex
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/pandas/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Pandas
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/python/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Python
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/reports/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Reports
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/selenium/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Selenium
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/webscrapping/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Webscrapping
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+                
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#requirements" class="md-nav__link">
+    <span class="md-ellipsis">
+      Requirements
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#customizing-a-docker-image" class="md-nav__link">
+    <span class="md-ellipsis">
+      Customizing a Docker image
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#adding-the-requirements" class="md-nav__link">
+    <span class="md-ellipsis">
+      Adding the requirements
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#importing-the-required-libraries" class="md-nav__link">
+    <span class="md-ellipsis">
+      Importing the required libraries
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#configuring-plots" class="md-nav__link">
+    <span class="md-ellipsis">
+      Configuring plots
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#configuring-jinja2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Configuring Jinja2
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#abstracting-the-report-structure" class="md-nav__link">
+    <span class="md-ellipsis">
+      Abstracting the report structure
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-jinja-template" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Jinja template
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#configuring-the-directories" class="md-nav__link">
+    <span class="md-ellipsis">
+      Configuring the directories
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#defining-some-helper-functions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Defining some helper functions
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-main-program" class="md-nav__link">
+    <span class="md-ellipsis">
+      The main program
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#putting-it-all-together" class="md-nav__link">
+    <span class="md-ellipsis">
+      Putting it all together
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#building-the-image" class="md-nav__link">
+    <span class="md-ellipsis">
+      Building the image
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#running-the-container" class="md-nav__link">
+    <span class="md-ellipsis">
+      Running the container
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#visualizing-the-results" class="md-nav__link">
+    <span class="md-ellipsis">
+      Visualizing the results
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#adding-extra-contents-to-the-final-pdf" class="md-nav__link">
+    <span class="md-ellipsis">
+      Adding extra contents to the final pdf
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#conclusion" class="md-nav__link">
+    <span class="md-ellipsis">
+      Conclusion
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sources" class="md-nav__link">
+    <span class="md-ellipsis">
+      Sources
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+  <div class="md-content md-content--post" data-md-component="content">
+    <div class="md-sidebar md-sidebar--post" data-md-component="sidebar" data-md-type="navigation">
+      <div class="md-sidebar__scrollwrap">
+        <div class="md-sidebar__inner md-post">
+          <nav class="md-nav md-nav--primary">
+            <div class="md-post__back">
+              <div class="md-nav__title md-nav__container">
+                <a href="../../../../" class="md-nav__link">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+                  <span class="md-ellipsis">
+                    Back to index
+                  </span>
+                </a>
+              </div>
+            </div>
+            
+              <div class="md-post__authors md-typeset">
+                
+                  <div class="md-profile md-post__profile">
+                    <span class="md-author md-author--long">
+                      <img src="https://avatars.githubusercontent.com/u/7612578?s=400&u=72f1b5ee3dfe65095b8cd39aee611e8a4260a99b&v=4" alt="Leonardo Ulises Spairani">
+                    </span>
+                    <span class="md-profile__description">
+                      <strong>
+                        
+                          Leonardo Ulises Spairani
+                        
+                      </strong>
+                      <br>
+                      Data Scientist and Python Developer
+                    </span>
+                  </div>
+                
+              </div>
+            
+            <ul class="md-post__meta md-nav__list">
+              <li class="md-nav__item md-nav__item--section">
+                <div class="md-post__title">
+                  <span class="md-ellipsis">
+                    Metadata
+                  </span>
+                </div>
+                <nav class="md-nav">
+                  <ul class="md-nav__list">
+                    <li class="md-nav__item">
+                      <div class="md-nav__link">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 19H5V8h14m-3-7v2H8V1H6v2H5c-1.11 0-2 .89-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2h-1V1m-1 11h-5v5h5v-5Z"/></svg>
+                        <time datetime="2024-03-20 00:00:00" class="md-ellipsis">March 20, 2024</time>
+                      </div>
+                    </li>
+                    
+                    
+                      <li class="md-nav__item">
+                        <div class="md-nav__link">
+                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9 3v15h3V3H9m3 2 4 13 3-1-4-13-3 1M5 5v13h3V5H5M3 19v2h18v-2H3Z"/></svg>
+                          <span class="md-ellipsis">
+                            in
+                            
+                              <a href="../../../../category/python/">Python</a>, 
+                              <a href="../../../../category/latex/">Latex</a>, 
+                              <a href="../../../../category/jinja2/">Jinja2</a>, 
+                              <a href="../../../../category/docker/">Docker</a>, 
+                              <a href="../../../../category/reports/">Reports</a>, 
+                              <a href="../../../../category/pandas/">Pandas</a></span>
+                        </div>
+                      </li>
+                    
+                    
+                      
+                      <li class="md-nav__item">
+                        <div class="md-nav__link">
+                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 20a8 8 0 0 0 8-8 8 8 0 0 0-8-8 8 8 0 0 0-8 8 8 8 0 0 0 8 8m0-18a10 10 0 0 1 10 10 10 10 0 0 1-10 10C6.47 22 2 17.5 2 12A10 10 0 0 1 12 2m.5 5v5.25l4.5 2.67-.75 1.23L11 13V7h1.5Z"/></svg>
+                          <span class="md-ellipsis">
+                            
+                              13 min read
+                            
+                          </span>
+                        </div>
+                      </li>
+                    
+                  </ul>
+                </nav>
+              </li>
+            </ul>
+          </nav>
+          
+        </div>
+      </div>
+    </div>
+    <article class="md-content__inner md-typeset">
+      
+        
+
+
+<h1 id="generating-reports-with-jinja-latex-and-docker">Generating reports with Jinja, LaTeX and Docker</h1>
+<p>Sharing information is a key aspect in most human activities and where reports play a role. Reports serve various purposes such as tracking our children's development at school, seeing our credit card expenses, evaluating statistics after training a machine learning model and the list goes on.</p>
+<p>In certain situations, there is a need to generate many reports that look similar which can be a tedious task if performed manually. In this blog post I will show how to generate reports programmatically using a Python template engine called <a href="https://jinja.palletsprojects.com">Jinja</a>, a high-quality document preparation system called <a href="https://www.latex-project.org/">Latex</a> and a platform called <a href="https://docs.docker.com/get-started/overview/">Docker</a> used to create applications in loosely isolated environments.</p>
+<!-- more -->
+
+<h2 id="requirements">Requirements</h2>
+<p>The requirements list is short for this one, only docker is needed because all the code will run inside what is called a docker container, <a href="https://docs.docker.com/get-docker/">click here for extra information about how to install Docker</a>.</p>
+<h2 id="customizing-a-docker-image">Customizing a Docker image</h2>
+<p>To learn what an image is we can go the <a href="https://docs.docker.com/get-started/overview/#images">Docker documentation</a>:</p>
+<blockquote>
+<p><em>An image is a read-only template with instructions for creating a Docker container. Often, an image is based on another image, with some additional customization..."</em></p>
+</blockquote>
+<p>To customize an image we use a <a href="https://docs.docker.com/reference/dockerfile/">Dockerfile</a>:</p>
+<blockquote>
+<p><em>"...A Dockerfile is a text document that contains all the commands a user could call on the command line to assemble an image..."</em></p>
+</blockquote>
+<p>Ok! Now we know that we need an image to create a container and to customize an image we use a Dockerfile. </p>
+<p>To create a Dockerfile, open a new empty directory and add a new file called... you guess it! <code>Dockerfile</code> (with no extension). Then add the following contents:</p>
+<div class="highlight"><span class="filename">Dockerfile</span><pre><span></span><code><span class="k">FROM</span><span class="w"> </span><span class="s">python:3.12-alpine3.19</span>
+
+<span class="k">RUN</span><span class="w"> </span>apk<span class="w"> </span>update<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>apk<span class="w"> </span>add<span class="w"> </span>texmf-dist<span class="w"> </span>texlive-full
+
+<span class="k">WORKDIR</span><span class="w"> </span><span class="s">/code</span>
+
+<span class="k">COPY</span><span class="w"> </span>requirements.txt<span class="w"> </span>/code/requirements.txt
+
+<span class="k">RUN</span><span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>-r<span class="w"> </span>requirements.txt
+
+<span class="k">COPY</span><span class="w"> </span>.<span class="w"> </span>/code/
+
+<span class="k">ENTRYPOINT</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;python3&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;main.py&quot;</span><span class="w"> </span><span class="p">]</span>
+</code></pre></div>
+<p>Let's break each line:</p>
+<ul>
+<li><code>FROM python:3.12-alpine3.19</code>: as the Docker docs mentioned, an image is usually based on another image. This line does exactly that. The <a href="https://docs.docker.com/reference/dockerfile/#from"><code>FROM</code> instruction</a> is used to indicate that we want to use the <code>python</code> image with the tag <code>3.12-alpine3.19</code>. Which in turn it means that we want Python version 3.12 running on the Alpine Linux version 3.19 operating system.</li>
+<li><code>RUN apk update &amp;&amp; apk add texmf-dist texlive-full</code>: this lines uses the <a href="https://docs.docker.com/reference/dockerfile/#run"><code>RUN</code> instruction</a> to add a new layer when building the image that executes a command that updates the references of the package repository and then installs a (La)Tex distribution called <a href="https://www.tug.org/texlive/">Texlive</a> with all available tex packages.</li>
+<li><code>WORKDIR /code</code>: the <a href="https://docs.docker.com/reference/dockerfile/#workdir"><code>WORKDIR</code> instruction</a> indicates the working directory inside the image during build time.</li>
+<li><code>COPY requirements.txt /code/requirements.txt</code>: we use the <a href="https://docs.docker.com/reference/dockerfile/#copy"><code>COPY</code> instruction</a> to get the <code>requirements.txt</code> from the host computer into the docker image.</li>
+<li><code>RUN pip install -r requirements.txt</code>: adds a new layer when building the image that installs the python dependencies.</li>
+<li><code>COPY . /code/</code>: the rest of the files are copied into the image.</li>
+<li><code>ENTRYPOINT ["python3", "main.py" ]</code>: finally, we use the <a href="https://docs.docker.com/reference/dockerfile/#entrypoint"><code>ENTRYPOINT</code> instruction</a> to run the <code>main.py</code> file.</li>
+</ul>
+<p>Now that the Dockerfile is set, we can continue by adding the files that are going to be included inside the image.</p>
+<div class="admonition info">
+<p class="admonition-title">Extra information</p>
+<ul>
+<li><a href="https://tex.stackexchange.com/questions/245982/differences-between-texlive-packages-in-linux">Difference between Tex and Latex</a></li>
+<li><a href="https://tex.stackexchange.com/questions/245982/differences-between-texlive-packages-in-linux">Differences between texlive packages in Linux</a></li>
+</ul>
+</div>
+<h2 id="adding-the-requirements">Adding the requirements</h2>
+<p>In the current directory, next to the Dockerfile, create a <code>requirements.txt</code> file with the following contents:</p>
+<div class="highlight"><span class="filename">requirements.txt</span><pre><span></span><code>Jinja2
+matplotlib
+seaborn
+pandas
+</code></pre></div>
+<p>We will use Jinja2 to render templates, Pandas for working with example data, and Matplotlib and Seaborn to create example plots. Docker will install the packages when we build the image. </p>
+<p>As a next step let us work on the <code>main.py</code> file</p>
+<h2 id="importing-the-required-libraries">Importing the required libraries</h2>
+<p>At the top of the file add the following imports:</p>
+<div class="highlight"><span class="filename">main.py</span><pre><span></span><code><span class="kn">import</span> <span class="nn">jinja2</span>
+<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">from</span> <span class="nn">subprocess</span> <span class="kn">import</span> <span class="n">call</span>
+<span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
+<span class="kn">import</span> <span class="nn">matplotlib</span>
+</code></pre></div>
+<p>Jinja2, Seaborn and Matplotlib are external libraries that we have mentioned before. The built-in python module <code>pathlib</code> is a used to work with the filesystem, in particular, the <code>Path</code> class is used to represent a system path as python class. The class function from the  <code>subprocess</code> built-in python module is used to run commands in the terminal. </p>
+<h2 id="configuring-plots">Configuring plots</h2>
+<p>To generate plots and figures that look really good, Latex uses the <a href="https://en.wikipedia.org/wiki/PGF/TikZ">pgf language</a> to specify vector graphics, to enable the backend that supports that language in matplotlib we have to add the following configuration:</p>
+<div class="highlight"><span class="filename">main.py</span><pre><span></span><code><span class="n">matplotlib</span><span class="o">.</span><span class="n">use</span><span class="p">(</span><span class="s2">&quot;pgf&quot;</span><span class="p">)</span>
+<span class="n">matplotlib</span><span class="o">.</span><span class="n">rcParams</span><span class="o">.</span><span class="n">update</span><span class="p">({</span>
+    <span class="s2">&quot;pgf.texsystem&quot;</span><span class="p">:</span> <span class="s2">&quot;xelatex&quot;</span><span class="p">,</span>
+    <span class="s1">&#39;font.family&#39;</span><span class="p">:</span> <span class="s1">&#39;serif&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;text.usetex&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="s1">&#39;pgf.rcfonts&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+<span class="p">})</span>
+</code></pre></div>
+<div class="admonition info">
+<p class="admonition-title">Matplotlib configuration</p>
+<p>For extra configuration details check the <a href="https://matplotlib.org/stable/users/explain/text/pgf.html">matplotlib docs</a>.</p>
+</div>
+<h2 id="configuring-jinja2">Configuring Jinja2</h2>
+<p>As a templating language, Jinja uses some specific characters to indicate where to inject text, some of those characters overlap with Latex syntax, that is why we need to add some extra configuration:</p>
+<div class="highlight"><span class="filename">main.py</span><pre><span></span><code><span class="c1"># Jinja2 configuration</span>
+<span class="n">latex_jinja_env</span> <span class="o">=</span> <span class="n">jinja2</span><span class="o">.</span><span class="n">Environment</span><span class="p">(</span>
+    <span class="n">block_start_string</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="se">\\</span><span class="s1">BLOCK{&#39;</span><span class="p">,</span>
+    <span class="n">block_end_string</span> <span class="o">=</span> <span class="s1">&#39;}&#39;</span><span class="p">,</span>
+    <span class="n">variable_start_string</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="se">\\</span><span class="s1">VAR{&#39;</span><span class="p">,</span>
+    <span class="n">variable_end_string</span> <span class="o">=</span> <span class="s1">&#39;}&#39;</span><span class="p">,</span>
+    <span class="n">comment_start_string</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="se">\\</span><span class="s1">#{&#39;</span><span class="p">,</span>
+    <span class="n">comment_end_string</span> <span class="o">=</span> <span class="s1">&#39;}&#39;</span><span class="p">,</span>
+    <span class="n">line_statement_prefix</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">%%</span><span class="s1">&#39;</span><span class="p">,</span>
+    <span class="n">line_comment_prefix</span> <span class="o">=</span> <span class="s1">&#39;%#&#39;</span><span class="p">,</span>
+    <span class="n">trim_blocks</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="n">autoescape</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n">lstrip_blocks</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">loader</span> <span class="o">=</span> <span class="n">jinja2</span><span class="o">.</span><span class="n">FileSystemLoader</span><span class="p">(</span><span class="n">Path</span><span class="o">.</span><span class="n">cwd</span><span class="p">()</span><span class="o">.</span><span class="n">absolute</span><span class="p">())</span>
+<span class="p">)</span>
+
+<span class="n">template</span> <span class="o">=</span> <span class="n">latex_jinja_env</span><span class="o">.</span><span class="n">get_template</span><span class="p">(</span><span class="s1">&#39;./templates/main_template.tex&#39;</span><span class="p">)</span>
+</code></pre></div>
+<p>In the code above we pass the configuration parameters to the <code>jinja2.Environment</code> class constructor and then we specify the template that we want to use, the <code>main_template.tex</code> file, which will be <a href="#the-jinja-template">presented below</a>.</p>
+<div class="admonition info">
+<p class="admonition-title">Jinja2 Environment documentation</p>
+<p>For extra details about what each parameter check the <a href="https://jinja.palletsprojects.com/en/3.0.x/api/?highlight=block_start_string#jinja2.Environment">Jinja2 reference in the docs</a>. </p>
+</div>
+<h2 id="abstracting-the-report-structure">Abstracting the report structure</h2>
+<p>Before going any further, it is essential to decide how to represent the report contents as code so it can be added systematically. To avoid adding extra complexity, I will use a python dictionaries, but keep in mind that the built-in module <a href="https://docs.python.org/3/library/dataclasses.html"><code>dataclasses</code></a>, or external libraries like <a href="https://docs.pydantic.dev/latest/">Pydantic</a> can be used to achieve the same.</p>
+<p>I will store the dictionary in a variable called <code>content</code>. The content will have a title, a summary, and one or more sections. In turn, each section will contain a title and a body. The body will be comprised of parts with of one of the following types: "text", "table", "figure". </p>
+<p>Here is how it will look like:</p>
+<div class="highlight"><pre><span></span><code><span class="n">content</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;title&quot;</span><span class="p">:</span> <span class="s2">&quot;Some title&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;summary&quot;</span><span class="p">:</span> <span class="s2">&quot;A summary&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;sections&quot;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="p">{</span>
+            <span class="s2">&quot;title&quot;</span><span class="p">:</span> <span class="s2">&quot;First Section&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;body&quot;</span><span class="p">:</span> <span class="p">[</span>
+                <span class="p">{</span><span class="s2">&quot;text&quot;</span><span class="p">:</span> <span class="s2">&quot;This is the first section&quot;</span><span class="p">},</span>
+            <span class="p">]</span>
+        <span class="p">},</span>
+        <span class="p">{</span>
+            <span class="s2">&quot;title&quot;</span><span class="p">:</span> <span class="s2">&quot;Second Section&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;body&quot;</span><span class="p">:</span> <span class="p">[</span>
+                <span class="p">{</span><span class="s2">&quot;text&quot;</span><span class="p">:</span> <span class="s2">&quot;This is the second section.&quot;</span><span class="p">},</span>
+                <span class="p">{</span><span class="s2">&quot;table&quot;</span><span class="p">:</span> <span class="s2">&quot;&lt;table in latex format&gt;&quot;</span><span class="p">},</span>
+                <span class="p">{</span><span class="s2">&quot;figure&quot;</span><span class="p">:</span> <span class="p">{</span>
+                    <span class="s2">&quot;path&quot;</span><span class="p">:</span> <span class="s2">&quot;&lt;posix path to the image file&gt;&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;caption&quot;</span><span class="p">:</span> <span class="s2">&quot;Some caption&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;label&quot;</span><span class="p">:</span> <span class="s2">&quot;fig:pairplot&quot;</span>
+                    <span class="p">}</span>
+                <span class="p">}</span>
+            <span class="p">]</span>
+        <span class="p">},</span>
+    <span class="p">],</span>
+<span class="p">}</span>
+</code></pre></div>
+<h2 id="the-jinja-template">The Jinja template</h2>
+<p>Now that we have an idea of how the report contents look like in Python code, I will show how it can be rendered systematically using the Jinja syntax. Here is how the template looks like:</p>
+<div class="highlight"><span class="filename">main_template.tex</span><pre><span></span><code><span class="k">\documentclass</span><span class="na">[12pt, a4paper]</span><span class="nb">{</span>article<span class="nb">}</span>
+<span class="k">\usepackage</span><span class="na">[left=2cm,top=2cm,right=2cm,bottom=2cm,bindingoffset=0cm]</span><span class="nb">{</span>geometry<span class="nb">}</span>
+<span class="k">\usepackage</span><span class="nb">{</span>graphicx<span class="nb">}</span>
+<span class="k">\usepackage</span><span class="nb">{</span>booktabs<span class="nb">}</span>
+<span class="k">\usepackage</span><span class="nb">{</span>longtable<span class="nb">}</span>
+<span class="k">\usepackage</span><span class="nb">{</span>tikz<span class="nb">}</span>
+<span class="k">\usepackage</span><span class="nb">{</span>tikz-cd<span class="nb">}</span>
+<span class="k">\usepackage</span><span class="nb">{</span>pgfplots<span class="nb">}</span>
+
+<span class="k">\begin</span><span class="nb">{</span>document<span class="nb">}</span>
+
+<span class="k">\title</span><span class="nb">{</span><span class="k">\VAR</span><span class="nb">{</span>content.title<span class="nb">}}</span>
+
+<span class="k">\maketitle</span>
+
+<span class="k">\section</span><span class="nb">{</span>Summary<span class="nb">}</span>
+<span class="k">\VAR</span><span class="nb">{</span>content.summary<span class="nb">}</span>
+
+<span class="k">\BLOCK</span><span class="nb">{</span> for section in content.sections <span class="nb">}</span>
+<span class="k">\section</span><span class="nb">{</span><span class="k">\VAR</span><span class="nb">{</span> section.title <span class="nb">}}</span>
+<span class="k">\BLOCK</span><span class="nb">{</span> for part in section.body <span class="nb">}</span>
+<span class="k">\VAR</span><span class="nb">{</span> part.text <span class="nb">}</span>
+
+<span class="k">\BLOCK</span><span class="nb">{</span> if part.table <span class="nb">}</span>
+<span class="k">\VAR</span><span class="nb">{</span> part.table <span class="nb">}</span>
+<span class="k">\BLOCK</span><span class="nb">{</span> endif <span class="nb">}</span>
+
+<span class="k">\BLOCK</span><span class="nb">{</span> if part.figure <span class="nb">}</span>
+<span class="k">\begin</span><span class="nb">{</span>figure<span class="nb">}</span>
+  <span class="k">\begin</span><span class="nb">{</span>center<span class="nb">}</span>
+      <span class="k">\input</span><span class="nb">{</span><span class="k">\VAR</span><span class="nb">{</span>part.figure.path<span class="nb">}}</span>
+  <span class="k">\end</span><span class="nb">{</span>center<span class="nb">}</span>
+  <span class="k">\caption</span><span class="nb">{</span><span class="k">\VAR</span><span class="nb">{</span>part.figure.caption<span class="nb">}}</span>
+<span class="k">\end</span><span class="nb">{</span>figure<span class="nb">}</span>
+<span class="k">\BLOCK</span><span class="nb">{</span> endif <span class="nb">}</span>
+
+<span class="k">\BLOCK</span><span class="nb">{</span> endfor <span class="nb">}</span>
+<span class="k">\BLOCK</span><span class="nb">{</span> endfor <span class="nb">}</span>
+
+<span class="k">\end</span><span class="nb">{</span>document<span class="nb">}</span>
+</code></pre></div>
+<p>Lines 1 to 10 are pure Latex code, the first line configures the pages lines 2 to 8 import the required packages to be able to use images, render tables, and create plots. Line 10, <code>\begin{document}</code> starts the body of the document.</p>
+<p>Next, in line 12 we have the line that contains the first Jinja2 syntax: <code>\title{\VAR{content.title}}</code>, the <code>\title{}</code> part is Latex and <code>\VAR{}</code> indicates the that we want to use a variable with the value <code>content.title</code> that comes from Python (check the <code>variable_start_string</code> in the <a href="#configuring-jinja2">Configuring Jinja2 section</a>).</p>
+<p>Looking a few lines below, we stumble with the first<code>\BLOCK</code> string where it says <code>\BLOCK{ for section in content.sections }</code>. In this line we use a for loop to iterate over each section of the <code>content.sections</code> variable.</p>
+<p>In the next <code>\BLOCK</code> a nested for loop is initiated to render each part of the section body. Then we conditionally render tables and figures using if statements with the following structure:</p>
+<div class="highlight"><pre><span></span><code><span class="k">\BLOCK</span><span class="nb">{</span> if &lt;some condition&gt; <span class="nb">}</span>
+Some content
+<span class="k">\BLOCK</span><span class="nb">{</span> endif <span class="nb">}</span>
+</code></pre></div>
+<p>Finally, the for loops are ended by doing <code>\BLOCK{ endfor }</code> (one for each loop) and then the latex code <code>\end{document}</code> is used to finish the document.</p>
+<div class="admonition info">
+<p class="admonition-title">Latex packages</p>
+<p>You can get extra information about each latex package in the <a href="https://ctan.org/">Comprehensive Tex Archive Network (CTAN) site</a>.</p>
+</div>
+<h2 id="configuring-the-directories">Configuring the directories</h2>
+<p>Going back to the <code>main.py</code> file, let's add some directory structure configuration. The <code>WORKDING_DIR</code> variable will reference a Path object where the <code>main.py</code> file is located, the <code>OUTPUT_DIR</code> a reference to the outputs directory, the <code>PLOT_DIR_PATH</code> to store the generated plots that will be added to the report, and finally the <code>TEX_FILE_PATH</code> which is a reference to the tex file that will be generated from the template. Feel free to adapt the directory structure to your specific project.</p>
+<div class="highlight"><span class="filename">main.py</span><pre><span></span><code><span class="c1"># Directories configuration</span>
+<span class="n">WORKING_DIR</span> <span class="o">=</span> <span class="n">Path</span><span class="o">.</span><span class="n">cwd</span><span class="p">()</span>
+<span class="n">OUTPUT_DIR</span> <span class="o">=</span> <span class="n">Path</span><span class="o">.</span><span class="n">cwd</span><span class="p">()</span><span class="o">.</span><span class="n">joinpath</span><span class="p">(</span><span class="s1">&#39;outputs&#39;</span><span class="p">)</span>
+<span class="n">OUTPUT_DIR</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">parents</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">PLOT_DIR_PATH</span> <span class="o">=</span> <span class="n">WORKING_DIR</span><span class="o">.</span><span class="n">joinpath</span><span class="p">(</span><span class="s2">&quot;assets&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">joinpath</span><span class="p">(</span><span class="s2">&quot;plots&quot;</span><span class="p">)</span>
+<span class="n">PLOT_DIR_PATH</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">parents</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">TEX_FILE_PATH</span> <span class="o">=</span> <span class="n">OUTPUT_DIR</span><span class="o">.</span><span class="n">joinpath</span><span class="p">(</span><span class="s2">&quot;main.tex&quot;</span><span class="p">)</span>
+</code></pre></div>
+<h2 id="defining-some-helper-functions">Defining some helper functions</h2>
+<p>Next, I will define some functions to assist on the task of creating the pdf. Check the <a href="https://peps.python.org/pep-0257/#what-is-a-docstring">docstrings</a> for details about each function.</p>
+<div class="highlight"><span class="filename">main.py</span><pre><span></span><code><span class="c1"># Helper functions</span>
+<span class="k">def</span> <span class="nf">build_tex</span><span class="p">(</span><span class="n">content</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Renders the content using the Jinja2 template and writes it to a .tex file.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">TEX_FILE_PATH</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">template</span><span class="o">.</span><span class="n">render</span><span class="p">(</span><span class="n">content</span><span class="o">=</span><span class="n">content</span><span class="p">))</span>
+
+
+<span class="k">def</span> <span class="nf">build_pdf</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Runs the xelatex command on the .tex file to generate the pdf file.</span>
+<span class="sd">    -interaction=batchmode is used to prevent xelatex to ask for user input.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">call</span><span class="p">([</span><span class="s2">&quot;xelatex&quot;</span><span class="p">,</span> <span class="s2">&quot;-interaction=batchmode&quot;</span><span class="p">,</span> <span class="n">TEX_FILE_PATH</span><span class="p">])</span>
+
+
+<span class="k">def</span> <span class="nf">clean</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Moves the pdf file to the output directory </span>
+<span class="sd">    and removes the other files generated by xelatex.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">file_extensions</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;log&#39;</span><span class="p">,</span> <span class="s1">&#39;pdf&#39;</span><span class="p">,</span> <span class="s1">&#39;aux&#39;</span><span class="p">]</span>
+    <span class="k">for</span> <span class="n">file</span> <span class="ow">in</span> <span class="n">WORKING_DIR</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="s1">&#39;*&#39;</span><span class="p">):</span>
+        <span class="n">extension</span> <span class="o">=</span> <span class="n">file</span><span class="o">.</span><span class="n">suffix</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">extension</span> <span class="ow">in</span> <span class="n">file_extensions</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">extension</span> <span class="o">!=</span> <span class="s1">&#39;pdf&#39;</span><span class="p">:</span>
+                <span class="n">file</span><span class="o">.</span><span class="n">unlink</span><span class="p">()</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">file</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">OUTPUT_DIR</span><span class="o">.</span><span class="n">joinpath</span><span class="p">(</span><span class="n">file</span><span class="o">.</span><span class="n">name</span><span class="p">))</span>
+</code></pre></div>
+<h2 id="the-main-program">The main program</h2>
+<p>After finishing the setup and defining the functions we can proceed to put all together to generate the report. In the same file, let's create an if block that looks like this:</p>
+<div class="highlight"><span class="filename">main.py</span><pre><span></span><code><span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="o">...</span>
+</code></pre></div>
+<p>This block will run only if we execute the file as a Python script, for example:</p>
+<div class="highlight"><pre><span></span><code>python<span class="w"> </span>main.py
+</code></pre></div>
+<p><a href="https://realpython.com/if-name-main-python/">Check this excellent article</a> about <code>if __name__ == "__main__"</code> from Real Python for extra information.</p>
+<ul>
+<li><strong>Loading example data</strong>: With this single line we will load some example data from the Seaborn package and store it in the <code>df</code> variable.</li>
+</ul>
+<div class="highlight"><span class="filename">main.py</span><pre><span></span><code><span class="n">df</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">load_dataset</span><span class="p">(</span><span class="s1">&#39;iris&#39;</span><span class="p">)</span>
+</code></pre></div>
+<ul>
+<li><strong>Adding sections</strong>: next, I'll create a variable called <code>content</code> and start adding some sections with the structure <a href="#abstracting-the-report-structure">presented before</a>:</li>
+</ul>
+<div class="highlight"><span class="filename">main.py</span><pre><span></span><code><span class="n">content</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;title&quot;</span><span class="p">:</span> <span class="s2">&quot;Testing Latex with Jinja2 and Pandas&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;summary&quot;</span><span class="p">:</span> <span class="s2">&quot;This is an example of how to use Jinja2 and Pandas to generate a Latex document.&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;sections&quot;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="p">{</span>
+            <span class="s2">&quot;title&quot;</span><span class="p">:</span> <span class="s2">&quot;First Section&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;body&quot;</span><span class="p">:</span> <span class="p">[</span>
+                <span class="p">{</span><span class="s2">&quot;text&quot;</span><span class="p">:</span> <span class="s2">&quot;This is the first section&quot;</span><span class="p">},</span>
+            <span class="p">]</span>
+        <span class="p">},</span>
+        <span class="p">{</span>
+            <span class="s2">&quot;title&quot;</span><span class="p">:</span> <span class="s2">&quot;Second Section&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;body&quot;</span><span class="p">:</span> <span class="p">[</span>
+                <span class="p">{</span><span class="s2">&quot;text&quot;</span><span class="p">:</span> <span class="s2">&quot;This is the second section.&quot;</span><span class="p">},</span>
+            <span class="p">]</span>
+        <span class="p">},</span>
+    <span class="p">],</span>
+<span class="p">}</span>
+</code></pre></div>
+<ul>
+<li><strong>Adding tables</strong>: here is an example of how to add a table. We will take advantage of the <a href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.to_latex.html"><code>to_latex</code></a> Pandas method to facilitate converting the pandas <code>dataframe</code> to Latex in an easy manner.</li>
+</ul>
+<div class="highlight"><span class="filename">main.py</span><pre><span></span><code><span class="n">content</span><span class="p">[</span><span class="s2">&quot;sections&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">({</span>
+    <span class="s2">&quot;title&quot;</span><span class="p">:</span> <span class="s2">&quot;Data&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;body&quot;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="p">{</span><span class="s2">&quot;text&quot;</span><span class="p">:</span> <span class="s2">&quot;Example of pandas table.&quot;</span><span class="p">},</span>
+        <span class="p">{</span><span class="s2">&quot;table&quot;</span><span class="p">:</span> <span class="n">df</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span><span class="o">.</span><span class="n">to_latex</span><span class="p">(</span>
+            <span class="n">longtable</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> 
+            <span class="n">caption</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;Random sample of 10 rows of the Iris dataset loaded from the seaborn Python library&quot;</span><span class="p">,</span> 
+                        <span class="s2">&quot;Iris Dataset sample.&quot;</span><span class="p">),</span> 
+            <span class="n">escape</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="p">},</span>
+    <span class="p">]</span>
+<span class="p">})</span>
+</code></pre></div>
+<ul>
+<li><strong>Adding plots</strong>: in this step I create a new Seaborn pairplot and store it in the <code>pariplot</code> variable. Then, I customize the plot, use the <code>savefig</code> method to save a the plot in the <code>pgf</code> format ready to be loaded by Latex. Finally, the plot is added as a new section of the <code>content</code> dictionary.</li>
+</ul>
+<div class="highlight"><span class="filename">main.py</span><pre><span></span><code><span class="c1"># Adding a plot to the content</span>
+<span class="n">pairplot</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">pairplot</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">hue</span><span class="o">=</span><span class="s1">&#39;species&#39;</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="mf">1.5</span><span class="p">)</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">move_legend</span><span class="p">(</span>
+    <span class="n">pairplot</span><span class="p">,</span> <span class="s2">&quot;lower center&quot;</span><span class="p">,</span>
+    <span class="n">bbox_to_anchor</span><span class="o">=</span><span class="p">(</span><span class="mf">0.4</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> 
+    <span class="n">ncol</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+    <span class="n">title</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> 
+    <span class="n">frameon</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="n">pairplot</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">PLOT_DIR_PATH</span><span class="o">.</span><span class="n">joinpath</span><span class="p">(</span><span class="s2">&quot;pairplot.pgf&quot;</span><span class="p">))</span>
+
+
+<span class="n">content</span><span class="p">[</span><span class="s2">&quot;sections&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">({</span>
+    <span class="s2">&quot;title&quot;</span><span class="p">:</span> <span class="s2">&quot;Plot&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;body&quot;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="p">{</span><span class="s2">&quot;text&quot;</span><span class="p">:</span> <span class="s2">&quot;Example of seaborn plot.&quot;</span><span class="p">},</span>
+        <span class="p">{</span><span class="s2">&quot;figure&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;path&quot;</span><span class="p">:</span> <span class="n">PLOT_DIR_PATH</span><span class="o">.</span><span class="n">joinpath</span><span class="p">(</span><span class="s2">&quot;pairplot.pgf&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">relative_to</span><span class="p">(</span><span class="n">WORKING_DIR</span><span class="p">)</span><span class="o">.</span><span class="n">as_posix</span><span class="p">(),</span>
+            <span class="s2">&quot;caption&quot;</span><span class="p">:</span> <span class="s2">&quot;Pairplot of the Iris dataset.&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;label&quot;</span><span class="p">:</span> <span class="s2">&quot;fig:pairplot&quot;</span>
+        <span class="p">}}</span>
+    <span class="p">]</span>
+<span class="p">})</span>
+</code></pre></div>
+<ul>
+<li><strong>Using the helper functions</strong>: once all the sections are added I called the <code>build_text</code> function passing the <code>content</code> variable, with all the sections and metadata, as argument. That function will populate the <a href="#the-jinja-template">Jinja template we fined</a> to create the <code>tex</code> file. Then the <code>build_pdf</code> function will create the new <code>pdf</code> file using the newly populated <code>tex</code> file and lastly, I called the <code>clean</code> function to remove unnecessary files and move the output files to the correct directories.</li>
+</ul>
+<div class="highlight"><pre><span></span><code>    <span class="n">build_tex</span><span class="p">(</span><span class="n">content</span><span class="p">)</span>
+    <span class="n">build_pdf</span><span class="p">()</span>
+    <span class="n">clean</span><span class="p">()</span>
+</code></pre></div>
+<h2 id="putting-it-all-together">Putting it all together</h2>
+<p>Before moving forward on creating the Docker image, confirm that your directory structure looks like this:</p>
+<div class="highlight"><pre><span></span><code>├── templates
+│   └── main_template.tex
+├── Dockerfile
+├── main.py
+└── requirements.txt
+</code></pre></div>
+<p>Also, check that the contents of the <code>main.py</code> file are the following:</p>
+<div class="highlight"><span class="filename">main.py</span><pre><span></span><code><span class="kn">import</span> <span class="nn">jinja2</span>
+<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">from</span> <span class="nn">subprocess</span> <span class="kn">import</span> <span class="n">call</span>
+<span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
+<span class="kn">import</span> <span class="nn">matplotlib</span>
+
+<span class="c1"># matplotlib configuration</span>
+<span class="n">matplotlib</span><span class="o">.</span><span class="n">use</span><span class="p">(</span><span class="s2">&quot;pgf&quot;</span><span class="p">)</span>
+<span class="n">matplotlib</span><span class="o">.</span><span class="n">rcParams</span><span class="o">.</span><span class="n">update</span><span class="p">({</span>
+    <span class="s2">&quot;pgf.texsystem&quot;</span><span class="p">:</span> <span class="s2">&quot;xelatex&quot;</span><span class="p">,</span>
+    <span class="s1">&#39;font.family&#39;</span><span class="p">:</span> <span class="s1">&#39;serif&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;text.usetex&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="s1">&#39;pgf.rcfonts&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+<span class="p">})</span>
+
+<span class="c1"># Jinja2 configuration</span>
+<span class="n">latex_jinja_env</span> <span class="o">=</span> <span class="n">jinja2</span><span class="o">.</span><span class="n">Environment</span><span class="p">(</span>
+    <span class="n">block_start_string</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="se">\\</span><span class="s1">BLOCK{&#39;</span><span class="p">,</span>
+    <span class="n">block_end_string</span> <span class="o">=</span> <span class="s1">&#39;}&#39;</span><span class="p">,</span>
+    <span class="n">variable_start_string</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="se">\\</span><span class="s1">VAR{&#39;</span><span class="p">,</span>
+    <span class="n">variable_end_string</span> <span class="o">=</span> <span class="s1">&#39;}&#39;</span><span class="p">,</span>
+    <span class="n">comment_start_string</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="se">\\</span><span class="s1">#{&#39;</span><span class="p">,</span>
+    <span class="n">comment_end_string</span> <span class="o">=</span> <span class="s1">&#39;}&#39;</span><span class="p">,</span>
+    <span class="n">line_statement_prefix</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">%%</span><span class="s1">&#39;</span><span class="p">,</span>
+    <span class="n">line_comment_prefix</span> <span class="o">=</span> <span class="s1">&#39;%#&#39;</span><span class="p">,</span>
+    <span class="n">trim_blocks</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="n">autoescape</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n">lstrip_blocks</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">loader</span> <span class="o">=</span> <span class="n">jinja2</span><span class="o">.</span><span class="n">FileSystemLoader</span><span class="p">(</span><span class="n">Path</span><span class="o">.</span><span class="n">cwd</span><span class="p">()</span><span class="o">.</span><span class="n">absolute</span><span class="p">())</span>
+<span class="p">)</span>
+
+<span class="n">template</span> <span class="o">=</span> <span class="n">latex_jinja_env</span><span class="o">.</span><span class="n">get_template</span><span class="p">(</span><span class="s1">&#39;./templates/main_template.tex&#39;</span><span class="p">)</span>
+
+<span class="c1"># Directories configuration</span>
+<span class="n">WORKING_DIR</span> <span class="o">=</span> <span class="n">Path</span><span class="o">.</span><span class="n">cwd</span><span class="p">()</span>
+<span class="n">OUTPUT_DIR</span> <span class="o">=</span> <span class="n">Path</span><span class="o">.</span><span class="n">cwd</span><span class="p">()</span><span class="o">.</span><span class="n">joinpath</span><span class="p">(</span><span class="s1">&#39;outputs&#39;</span><span class="p">)</span>
+<span class="n">OUTPUT_DIR</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">parents</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">PLOT_DIR_PATH</span> <span class="o">=</span> <span class="n">WORKING_DIR</span><span class="o">.</span><span class="n">joinpath</span><span class="p">(</span><span class="s2">&quot;assets&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">joinpath</span><span class="p">(</span><span class="s2">&quot;plots&quot;</span><span class="p">)</span>
+<span class="n">PLOT_DIR_PATH</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">parents</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">TEX_FILE_PATH</span> <span class="o">=</span> <span class="n">OUTPUT_DIR</span><span class="o">.</span><span class="n">joinpath</span><span class="p">(</span><span class="s2">&quot;main.tex&quot;</span><span class="p">)</span>
+
+<span class="c1"># Helper functions</span>
+<span class="k">def</span> <span class="nf">build_tex</span><span class="p">(</span><span class="n">content</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Renders the content using the Jinja2 template and writes it to a .tex file.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">TEX_FILE_PATH</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">template</span><span class="o">.</span><span class="n">render</span><span class="p">(</span><span class="n">content</span><span class="o">=</span><span class="n">content</span><span class="p">))</span>
+
+
+<span class="k">def</span> <span class="nf">build_pdf</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Runs the xelatex command on the .tex file to generate the pdf file.</span>
+<span class="sd">    -interaction=batchmode is used to prevent xelatex to ask for user input.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">call</span><span class="p">([</span><span class="s2">&quot;xelatex&quot;</span><span class="p">,</span> <span class="s2">&quot;-interaction=batchmode&quot;</span><span class="p">,</span> <span class="n">TEX_FILE_PATH</span><span class="p">])</span>
+
+
+<span class="k">def</span> <span class="nf">clean</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Moves the pdf file to the output directory </span>
+<span class="sd">    and removes the other files generated by xelatex.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">file_extensions</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;log&#39;</span><span class="p">,</span> <span class="s1">&#39;pdf&#39;</span><span class="p">,</span> <span class="s1">&#39;aux&#39;</span><span class="p">]</span>
+    <span class="k">for</span> <span class="n">file</span> <span class="ow">in</span> <span class="n">WORKING_DIR</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="s1">&#39;*&#39;</span><span class="p">):</span>
+        <span class="n">extension</span> <span class="o">=</span> <span class="n">file</span><span class="o">.</span><span class="n">suffix</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">extension</span> <span class="ow">in</span> <span class="n">file_extensions</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">extension</span> <span class="o">!=</span> <span class="s1">&#39;pdf&#39;</span><span class="p">:</span>
+                <span class="n">file</span><span class="o">.</span><span class="n">unlink</span><span class="p">()</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">file</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">OUTPUT_DIR</span><span class="o">.</span><span class="n">joinpath</span><span class="p">(</span><span class="n">file</span><span class="o">.</span><span class="n">name</span><span class="p">))</span>
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+
+    <span class="c1"># Load example data</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">load_dataset</span><span class="p">(</span><span class="s1">&#39;iris&#39;</span><span class="p">)</span>
+
+    <span class="n">content</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;title&quot;</span><span class="p">:</span> <span class="s2">&quot;Testing Latex with Jinja2 and Pandas&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;summary&quot;</span><span class="p">:</span> <span class="s2">&quot;This is an example of how to use Jinja2 and Pandas to generate a Latex document.&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;sections&quot;</span><span class="p">:</span> <span class="p">[</span>
+            <span class="p">{</span>
+                <span class="s2">&quot;title&quot;</span><span class="p">:</span> <span class="s2">&quot;First Section&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;body&quot;</span><span class="p">:</span> <span class="p">[</span>
+                    <span class="p">{</span><span class="s2">&quot;text&quot;</span><span class="p">:</span> <span class="s2">&quot;This is the first section&quot;</span><span class="p">},</span>
+                <span class="p">]</span>
+            <span class="p">},</span>
+            <span class="p">{</span>
+                <span class="s2">&quot;title&quot;</span><span class="p">:</span> <span class="s2">&quot;Second Section&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;body&quot;</span><span class="p">:</span> <span class="p">[</span>
+                    <span class="p">{</span><span class="s2">&quot;text&quot;</span><span class="p">:</span> <span class="s2">&quot;This is the second section.&quot;</span><span class="p">},</span>
+                <span class="p">]</span>
+            <span class="p">},</span>
+        <span class="p">],</span>
+    <span class="p">}</span>
+
+    <span class="c1"># Adding a table to the content</span>
+    <span class="n">content</span><span class="p">[</span><span class="s2">&quot;sections&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">({</span>
+        <span class="s2">&quot;title&quot;</span><span class="p">:</span> <span class="s2">&quot;Data&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;body&quot;</span><span class="p">:</span> <span class="p">[</span>
+            <span class="p">{</span><span class="s2">&quot;text&quot;</span><span class="p">:</span> <span class="s2">&quot;Example of pandas table.&quot;</span><span class="p">},</span>
+            <span class="p">{</span><span class="s2">&quot;table&quot;</span><span class="p">:</span> <span class="n">df</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span><span class="o">.</span><span class="n">to_latex</span><span class="p">(</span>
+                <span class="n">longtable</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> 
+                <span class="n">caption</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;Random sample of 10 rows of the Iris dataset loaded from the seaborn Python library&quot;</span><span class="p">,</span> 
+                         <span class="s2">&quot;Iris Dataset sample.&quot;</span><span class="p">),</span> 
+                <span class="n">escape</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="p">},</span>
+        <span class="p">]</span>
+    <span class="p">})</span>
+
+
+    <span class="c1"># Adding a plot to the content</span>
+    <span class="n">pairplot</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">pairplot</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">hue</span><span class="o">=</span><span class="s1">&#39;species&#39;</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="mf">1.5</span><span class="p">)</span>
+    <span class="n">sns</span><span class="o">.</span><span class="n">move_legend</span><span class="p">(</span>
+        <span class="n">pairplot</span><span class="p">,</span> <span class="s2">&quot;lower center&quot;</span><span class="p">,</span>
+        <span class="n">bbox_to_anchor</span><span class="o">=</span><span class="p">(</span><span class="mf">0.4</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> 
+        <span class="n">ncol</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+        <span class="n">title</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> 
+        <span class="n">frameon</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="n">pairplot</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">PLOT_DIR_PATH</span><span class="o">.</span><span class="n">joinpath</span><span class="p">(</span><span class="s2">&quot;pairplot.pgf&quot;</span><span class="p">))</span>
+
+
+    <span class="n">content</span><span class="p">[</span><span class="s2">&quot;sections&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">({</span>
+        <span class="s2">&quot;title&quot;</span><span class="p">:</span> <span class="s2">&quot;Plot&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;body&quot;</span><span class="p">:</span> <span class="p">[</span>
+            <span class="p">{</span><span class="s2">&quot;text&quot;</span><span class="p">:</span> <span class="s2">&quot;Example of seaborn plot.&quot;</span><span class="p">},</span>
+            <span class="p">{</span><span class="s2">&quot;figure&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;path&quot;</span><span class="p">:</span> <span class="n">PLOT_DIR_PATH</span><span class="o">.</span><span class="n">joinpath</span><span class="p">(</span><span class="s2">&quot;pairplot.pgf&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">relative_to</span><span class="p">(</span><span class="n">WORKING_DIR</span><span class="p">)</span><span class="o">.</span><span class="n">as_posix</span><span class="p">(),</span>
+                <span class="s2">&quot;caption&quot;</span><span class="p">:</span> <span class="s2">&quot;Pairplot of the Iris dataset.&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;label&quot;</span><span class="p">:</span> <span class="s2">&quot;fig:pairplot&quot;</span>
+            <span class="p">}}</span>
+        <span class="p">]</span>
+    <span class="p">})</span>
+
+    <span class="n">build_tex</span><span class="p">(</span><span class="n">content</span><span class="p">)</span>
+    <span class="n">build_pdf</span><span class="p">()</span>
+    <span class="n">clean</span><span class="p">()</span>
+</code></pre></div>
+<h2 id="building-the-image">Building the image</h2>
+<p>To tackle this step we only need to run the following command:</p>
+<div class="highlight"><pre><span></span><code>docker<span class="w"> </span>build<span class="w"> </span>-t<span class="w"> </span>jinja-latex<span class="w"> </span>.
+</code></pre></div>
+<p>We use the <a href="https://docs.docker.com/build/building/packaging/#building"><code>docker build</code> command</a> to build the image. The <code>-t</code> flag is used to indicate the image name and tag, in this example we are setting the name to be <code>jinja-latex</code> with no tag. Finally, the dot at the and indicates that the Dockerfile should use the current directory as build context for the image.</p>
+<div class="admonition warning">
+<p class="admonition-title">Image size</p>
+<p>Building the image might take a couple of minutes and have a size around 4 GB, which is due to the metapackage texlive-full. To reduce the image size I recommend reading <a href="https://gist.github.com/wkrea/b91e3d14f35d741cf6b05e57dfad8faf" target="_blank">this Gist</a>.</p>
+</div>
+<h2 id="running-the-container">Running the container</h2>
+<p>Once the image is built, navigate where the <code>main.py</code> file is on your host computer, then run the container with the following command:</p>
+<div class="highlight"><pre><span></span><code>docker<span class="w"> </span>run<span class="w"> </span>--rm<span class="w"> </span>-v<span class="w"> </span><span class="s2">&quot;/</span><span class="k">$(</span><span class="nb">pwd</span><span class="k">)</span><span class="s2">://code&quot;</span><span class="w"> </span>jinja-latex<span class="w"> </span>
+</code></pre></div>
+<p>The flag <a href="https://docs.docker.com/reference/cli/docker/container/rm/" target="_blank"><code>--rm</code></a> will remove the container after it finishes running since we don't need it anymore, another one can always be built from the image. The <code>-v "/$(pwd)://code"</code> flag will map the current working directory on the host computer to the <code>/code</code> directory inside the image. Finally, <code>jinja-latex</code> instructs docker to build the container using the image with the tag <code>jinja-latex</code>.</p>
+<p>After a few seconds you should see an output similar to this one:</p>
+<div class="highlight"><pre><span></span><code>This<span class="w"> </span>is<span class="w"> </span>XeTeX,<span class="w"> </span>Version<span class="w"> </span><span class="m">3</span>.141592653-2.6-0.999995<span class="w"> </span><span class="o">(</span>TeX<span class="w"> </span>Live<span class="w"> </span><span class="m">2023</span>/Alpine<span class="w"> </span>Linux<span class="o">)</span><span class="w"> </span><span class="o">(</span>preloaded<span class="w"> </span><span class="nv">format</span><span class="o">=</span>xelatex<span class="o">)</span>
+<span class="w"> </span>restricted<span class="w"> </span><span class="se">\w</span>rite18<span class="w"> </span>enabled.
+entering<span class="w"> </span>extended<span class="w"> </span>mode
+</code></pre></div>
+<p>This indicates the xelatex run with no issues. </p>
+<h2 id="visualizing-the-results">Visualizing the results</h2>
+<p>Next, check your current directory, there should be some new directories and files:</p>
+<div class="highlight"><pre><span></span><code>├── assets
+│   └── plots
+│       └── pairplot.pgf
+├── outputs
+│   ├── main.pdf
+│   └── main.tex
+...
+</code></pre></div>
+<p>Try opening the <code>main.pdf</code> file, it should contain something like this:</p>
+<p><a href="../../../../../assets/posts/report-generator-with-jinja-latex-and-docker/images/latex_output_example.png"><img alt="latex_output_example" src="../../../../../assets/posts/report-generator-with-jinja-latex-and-docker/images/latex_output_example.png" /></a></p>
+<h2 id="adding-extra-contents-to-the-final-pdf">Adding extra contents to the final pdf</h2>
+<p>A great feature is that you can edit the <code>main.tex</code> file inside the <code>outputs</code> directory to customize the text of the final pdf.</p>
+<p>To use the feature we can use the followind command:</p>
+<div class="highlight"><pre><span></span><code>docker<span class="w"> </span>run<span class="w"> </span>-it<span class="w"> </span>--entrypoint<span class="w"> </span>//bin//bash<span class="w"> </span>-v<span class="w"> </span><span class="s2">&quot;/</span><span class="k">$(</span><span class="nb">pwd</span><span class="k">)</span><span class="s2">://code&quot;</span><span class="w"> </span>--name<span class="w"> </span>pdf-generator<span class="w"> </span>jinja-latex
+</code></pre></div>
+<p>The <code>-it</code> flag is really two flags, the <a href="https://docs.docker.com/reference/cli/docker/container/run/#interactive" target="_blank"><code>i</code> (interactive) flag</a> and the <a href="https://docs.docker.com/reference/cli/docker/container/run/#tty" target="_blank"><code>t</code> (Allocate a pseudo-TTY) flag</a>. We will use them in combination with the <code>--entrypoint //bin//bash</code> to open a bash terminal and pass commands to the container. Finally, we add a name to the container with <code>--name pdf-generator</code>.</p>
+<p>You should see something like this on the terminal:</p>
+<div class="highlight"><pre><span></span><code>b7b15f4f21cb:/code#<span class="w"> </span>
+</code></pre></div>
+<p>That indicates that the container is waiting for input.</p>
+<p>Now we can proceed to add our changes to the <code>main.tex</code> file:</p>
+<div class="highlight"><pre><span></span><code>...
+
+<span class="k">\section</span><span class="nb">{</span>Custom section added to the main.tex file<span class="nb">}</span>
+
+Some custom content added to the main.tex file directly.
+
+...
+</code></pre></div>
+<p>Then, use xelatex to build the pdf from the <code>main.tex</code> file:</p>
+<div class="highlight"><span class="filename">b7b15f4f21cb:/code#</span><pre><span></span><code>xelatex<span class="w"> </span>-interaction<span class="o">=</span>batchmode<span class="w"> </span>.//outputs//main.tex
+</code></pre></div>
+<p>Next, we can use the <code>clean</code> function inside the <code>main.py</code> file to reorganize and remove the output files: </p>
+<div class="highlight"><span class="filename">b7b15f4f21cb:/code#</span><pre><span></span><code>python<span class="w"> </span>-c<span class="w"> </span><span class="s1">&#39;import main; main.clean()&#39;</span>
+</code></pre></div>
+<p>After finishing using the container, exit the terminal:</p>
+<div class="highlight"><span class="filename">b7b15f4f21cb:/code#</span><pre><span></span><code><span class="nb">exit</span>
+</code></pre></div>
+<p>And delete the container it using the command:</p>
+<div class="highlight"><pre><span></span><code>docker<span class="w"> </span>container<span class="w"> </span>rm<span class="w"> </span>pdf-generator
+</code></pre></div>
+<h2 id="conclusion">Conclusion</h2>
+<p>In this blog post I showed how you can create high quality pdf files dynamically which could be used to save a lot of time and effort when performing repetitive tasks. Using this method you can create periodic reports updating the plots and statistics really fast and even customizing the output tex file and recreating the pdf.</p>
+<h2 id="sources">Sources</h2>
+<ul>
+<li>Denk, T. (2019, August 12). Exporting matplotlib plots to latex. Timo Denk’s Blog. <a href="https://blog.timodenk.com/exporting-matplotlib-plots-to-latex/" target="_blank">https://blog.timodenk.com/exporting-matplotlib-plots-to-latex/</a> </li>
+<li>Erickson, B. (2015, November 24). Latex templates with python and Jinja2 to generate pdfs. Brad Erickson. <a href="https://13rac1.com/articles/2015/11/latex-templates-python-and-jinja2-generate-pdfs/" target="_blank">https://13rac1.com/articles/2015/11/latex-templates-python-and-jinja2-generate-pdfs/</a></li>
+<li>Walton, J. (2020, March 24). Matplotlib plots for latex with PGF. It’s more fun to compute. <a href="https://jwalton.info/Matplotlib-latex-PGF/" target="_blank">https://jwalton.info/Matplotlib-latex-PGF/</a> </li>
+</ul>
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+  
+
+
+
+    <hr>
+    <p>If you find this content useful, please consider supporting my work by buying me a coffee.</p>
+    <a href="https://www.buymeacoffee.com/contactvw" target="_blank"><img
+            src="https://cdn.buymeacoffee.com/buttons/v2/default-blue.png" alt="Buy Me A Coffee"
+            style="height: 60px !important;width: 217px !important;"></a>
+
+
+  <h2 id="__comments">Comments</h2>
+  <div id="disqus_thread"></div>
+  <script>
+      /**
+      *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+      *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables    */
+      var disqus_config = function () {
+      this.page.url = 'https://leospairani.disqus.com/';  // Replace PAGE_URL with your page's canonical URL variable
+      this.page.identifier = 'leospairani'; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+      };
+
+      (function() { // DON'T EDIT BELOW THIS LINE
+      var d = document, s = d.createElement('script');
+      s.src = 'https://leospairani.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', +new Date());
+      (d.head || d.body).appendChild(s);
+      })();
+  </script>
+  <script id="dsq-count-scr" src="//leospairani.disqus.com/count.js" async></script>
+  <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+      
+    </article>
+  </div>
+
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "../../../../..", "features": ["content.tooltips", "content.code.copy", "content.code.annotate"], "search": "../../../../../assets/javascripts/workers/search.b8dbb3d2.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../../../../../assets/javascripts/bundle.c18c5fb9.min.js"></script>
+      
+    
+  </body>
+</html>
